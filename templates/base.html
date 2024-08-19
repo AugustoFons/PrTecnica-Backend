@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Prueba Tecnica - Backend</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container-fluid bg-dark py-3" style="min-height: 90vh;">
+        <h2 class="text-white py-3">Usuarios</h2>
+        <a href="/add" class="btn" style="text-decoration: none;">
+            <button class="btn text-white" style="background-color: rgb(49, 183, 49);">Agregar Usuario</button>
+        </a>
+        <a href="/add_movie" style="text-decoration: none;">
+            <button class="btn text-white" style="background-color: rgb(183, 49, 174);">Agregar Pelicula</button>
+        </a>
+
+        <!-- BUSCADOR -->
+        <form method="get" action="{% url 'user_list' %}">
+            <input class="input p-1 m-3" type="text" name="q" value="{{ query }}" placeholder=" Search...">
+            <button class="btn text-white  mb-1" style="background-color: brown;" type="submit">Search</button>
+        </form>
+
+        <!-- TABLA -->
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Seguro</th>
+                    <th>Películas Favoritas</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.first_name }} {{ user.last_name }}
+                        <a href="{% url 'edit_user' user_id=user.id %}" style="text-decoration: none;">
+                            <img src="{% static 'img/edit.svg' %}" alt="Logo" width="24px" style="padding-bottom: 2px;">
+                        </a>
+                        <a href="{% url 'delete_user' user_id=user.id %}" style="text-decoration: none;">
+                            <img src="{% static 'img/elim.png' %}" alt="Logo" width="22px" style="padding-bottom: 2px;">
+                        </a>
+                    </td>
+                    <td>{{ user.birthdate }}</td>
+                    <td>{{ user.has_insurance }}</td>
+                    <td class="movie-list">
+                        {% if user.favourite_movies.all %}
+                            <ul class="list-unstyled">
+                                {% for movie in user.favourite_movies.all %}
+                                    <li>{{ movie.title }} ({{ movie.genre }})</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            No hay películas favoritas
+                        {% endif %}
+                    </td>
+                <td>{{ user.id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <footer id="footer">
+        <div class="container">
+            <h3>Prueba Técnica</h3>
+            <p>Backend - Uteam</p>
+
+            <div class="copyright ">
+                &copy; Realizado por 
+                <strong>
+                    <span>Augusto Fons</span>
+                </strong>
+            </div>
+        </div>
+    </footer>
+
+<!-- Bootstrap js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
