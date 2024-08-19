@@ -36,7 +36,7 @@ def add_movie(request):
             new_movie_title = form.cleaned_data['new_movie_title']
             new_movie_genre = form.cleaned_data['new_movie_genre']
             Movie.objects.get_or_create(title=new_movie_title, genre=new_movie_genre)
-            return redirect('add_user') 
+            return redirect('all_users') 
     else:
         form = MovieForm()
     
